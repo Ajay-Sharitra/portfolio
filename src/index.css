@@ -1,0 +1,234 @@
+@import "tailwindcss";
+
+@font-face {
+  font-family: 'PP Neue Montreal';
+  src: url('/fonts/PPNeueMontreal-Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'PP Neue Montreal Mono';
+  src: url('/fonts/PPNeueMontrealMono-Medium.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'FH Phemister';
+  src: url('/fonts/FHPhemister-Light.woff2') format('woff2');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  --design-width: 1440;
+  --container: clamp(1440px, 100vw, 2560px);
+  --px: calc(var(--container) / var(--design-width));
+
+  --green: #cee49f;
+  --black: #0b0b0b;
+  --green-12: rgba(206, 228, 159, 0.12);
+  --green-30: rgba(206, 228, 159, 0.3);
+
+  --cap-bold: 0.0215em;
+  --cap-mono: 0.143em;
+  --cap-height: 0.715em;
+}
+
+@media (max-width: 600px) {
+  :root {
+    --design-width: 375;
+    --container: 100vw;
+  }
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background-color: var(--black);
+  color: var(--green);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: geometricPrecision;
+  user-select: none;
+}
+
+/* Typography tokens */
+.font-sans-bold {
+  font-family: 'PP Neue Montreal', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-weight: 700;
+}
+
+.font-mono-medium {
+  font-family: 'PP Neue Montreal Mono', monospace;
+  font-weight: 500;
+}
+
+.font-serif-light {
+  font-family: 'FH Phemister', Georgia, serif;
+  font-weight: 300;
+}
+
+.h3 {
+  font-family: 'PP Neue Montreal', sans-serif;
+  font-weight: 700;
+  font-size: calc(14 * var(--px));
+  line-height: 0.8;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.mono {
+  font-family: 'PP Neue Montreal Mono', monospace;
+  font-weight: 500;
+  font-size: calc(10 * var(--px));
+  line-height: 1;
+  text-transform: uppercase;
+  white-space: nowrap;
+  font-feature-settings: 'ss02' 1, 'zero' 1;
+}
+
+.blend {
+  mix-blend-mode: difference;
+  color: var(--green);
+}
+
+/* Corner element alignments */
+.corner {
+  margin-top: calc(-1 * var(--cap-bold));
+}
+
+.corner--tl {
+  top: calc(16 * var(--px));
+  left: calc(16 * var(--px));
+}
+
+.corner--tr {
+  top: calc(16 * var(--px));
+  right: calc(16 * var(--px));
+}
+
+.corner--bl {
+  bottom: calc(18 * var(--px));
+  left: calc(16 * var(--px));
+}
+
+.corner--br {
+  bottom: calc(18 * var(--px));
+  right: calc(16 * var(--px));
+}
+
+/* Custom interactive navigation pill */
+.pill {
+  display: inline-flex;
+  align-items: center;
+  height: calc(18 * var(--px));
+  padding: 0 calc(7 * var(--px));
+  border-radius: calc(2 * var(--px));
+  background-color: var(--green-12);
+  color: var(--green);
+  font-family: 'PP Neue Montreal Mono', monospace;
+  font-weight: 500;
+  font-size: calc(10 * var(--px));
+  line-height: 1;
+  text-transform: uppercase;
+  white-space: nowrap;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: background-color 0.22s cubic-bezier(0.16, 1, 0.3, 1),
+              color 0.22s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.pill:hover {
+  background-color: var(--green);
+  color: var(--black);
+}
+
+.pill.is-active {
+  background-color: var(--green);
+  color: var(--black);
+}
+
+.pill--menu {
+  width: calc(118 * var(--px));
+  justify-content: space-between;
+}
+
+/* View switcher */
+.view-switch-btn {
+  position: relative;
+  display: inline-block;
+  min-width: calc(12 * var(--px));
+  text-align: center;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+}
+
+.view-switch-btn::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -4px;
+  height: 2px;
+  background: var(--green);
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.4s cubic-bezier(0.625, 0.05, 0, 1);
+}
+
+.view-switch-btn.is-active::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+.view-switch-btn:hover::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+/* Masked lines for text animation */
+.line {
+  display: block;
+  overflow: hidden;
+}
+
+.line-mid {
+  display: block;
+  will-change: transform;
+}
+
+/* Custom scrollbars inside overlays */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: rgba(11, 11, 11, 0.8);
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(206, 228, 159, 0.25);
+  border-radius: 2px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: var(--green);
+}

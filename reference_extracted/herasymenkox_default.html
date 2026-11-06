@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Yehor Herasymenko — Digital Designer</title>
+    <link rel="icon" href="favicon.svg?v=7" type="image/svg+xml" />
+    <link rel="preload" href="fonts/PPNeueMontreal-Bold.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="fonts/PPNeueMontrealMono-Medium.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="fonts/FHPhemister-Light.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="stylesheet" href="css/style.css" />
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "./js/vendor/three/three.module.min.js"
+        }
+      }
+    </script>
+    <script src="js/transition.js"></script>
+    <script>
+      try {
+        var nav = performance.getEntriesByType('navigation')[0];
+        var fromSite = document.referrer && new URL(document.referrer).origin === location.origin && new URL(document.referrer).pathname !== location.pathname;
+        if (nav && nav.type !== 'reload' && (nav.type === 'back_forward' || fromSite)) document.documentElement.classList.add('is-preloaded');
+      } catch (e) {}
+    </script>
+  </head>
+  <body>
+    <canvas class="orbit" data-orbit></canvas>
+    <canvas class="gl" data-gl></canvas>
+
+    <p class="blend h3 corner corner--tl" data-ui><a href="/" data-home>Yehor Herasymenko</a></p>
+
+    <nav class="blend menu" aria-label="Primary" data-ui>
+      <a class="pill pill--menu is-active" href="#" data-stub aria-current="page">
+        <span class="pill-label">
+          <span>Work</span>
+          <sup class="pill-count">(05)</sup>
+        </span>
+        <svg class="pill-dot" viewBox="0 0 3.11171 4" aria-hidden="true">
+          <path d="M1.55585 4C0.602961 4 0 3.23015 0 2.00269C0 0.769852 0.602961 0 1.55585 0C2.50875 0 3.11171 0.769852 3.11171 2.00269C3.11171 3.23015 2.50875 4 1.55585 4Z" />
+        </svg>
+      </a>
+      <a class="pill pill--menu" href="/profile">Profile</a>
+      <a class="pill pill--menu" href="/connect">Connect</a>
+    </nav>
+
+    <nav class="blend h3 view-switch" aria-label="View" data-ui data-swap>
+      <a class="view-switch-item is-active" href="#" data-view="slider" aria-current="page">01</a>
+      <span aria-hidden="true">||</span>
+      <a class="view-switch-item" href="#" data-view="gallery">02</a>
+      <span aria-hidden="true">||</span>
+      <a class="view-switch-item" href="#" data-view="orbit">03</a>
+    </nav>
+
+    <div data-texts></div>
+
+    <div data-gallery></div>
+
+    <div class="blend h3 cursor" data-cursor aria-hidden="true">View case</div>
+
+    <p class="blend h3 corner corner--bl" data-clock data-ui>KYIV, UA_00:00:00</p>
+    <script>
+      document.currentScript.previousElementSibling.textContent = 'KYIV, UA_' + new Intl.DateTimeFormat('en-GB', { timeZone: 'Europe/Kyiv', hour: '2-digit', minute: '2-digit', second: '2-digit', hourCycle: 'h23' }).format(new Date());
+    </script>
+
+    <div class="blend stepper" data-stepper aria-hidden="true">
+      <span class="mono" data-stepper-current>001</span>
+      <span class="stepper-steps" data-stepper-steps></span>
+      <span class="mono" data-stepper-count>005</span>
+    </div>
+
+    <div class="ruler" data-ruler aria-hidden="true">
+      <div class="ruler-track" data-ruler-track></div>
+    </div>
+
+    <p class="blend h3 corner corner--br" data-ui>©2026</p>
+
+    <div class="work" data-work></div>
+
+    <div class="veil" data-veil></div>
+
+    <div class="load" data-load>
+      <div class="load-bg" data-load-bg></div>
+      <div class="load-no h3"><div data-load-no>0%</div></div>
+    </div>
+
+    <script src="js/vendor/gsap.min.js"></script>
+    <script type="module" src="js/main.js"></script>
+  </body>
+</html>

@@ -1,0 +1,1904 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ajay Sharitra — Software for Everyone</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0e0e0e;
+    --paper: #f5f0e8;
+    --cream: #ede7d9;
+    --amber: #d4a843;
+    --amber-light: #f0c96a;
+    --rust: #b85c2a;
+    --forest: #2d4a3e;
+    --forest-light: #3d6355;
+    --muted: #7a7060;
+    --line: rgba(14,14,14,0.12);
+    --serif: 'Playfair Display', Georgia, serif;
+    --mono: 'DM Mono', monospace;
+    --sans: 'DM Sans', sans-serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 16px;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* ── NOISE TEXTURE OVERLAY ── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 1000;
+    opacity: 0.4;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 900;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.2rem 3rem;
+    background: rgba(245,240,232,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--line);
+  }
+
+  .nav-logo {
+    font-family: var(--serif);
+    font-size: 1.1rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    text-decoration: none;
+    color: var(--ink);
+  }
+  .nav-logo span { color: var(--amber); }
+
+  .nav-links {
+    display: flex;
+    gap: 2rem;
+    list-style: none;
+  }
+  .nav-links a {
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: var(--muted);
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--ink); }
+
+  .nav-cta {
+    background: var(--ink);
+    color: var(--paper) !important;
+    padding: 0.5rem 1.2rem;
+    border-radius: 2px;
+    font-family: var(--mono);
+    font-size: 0.72rem !important;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: background 0.2s, color 0.2s;
+  }
+  .nav-cta:hover { background: var(--amber) !important; color: var(--ink) !important; }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-left {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 8rem 3rem 5rem 5rem;
+    position: relative;
+    z-index: 2;
+  }
+
+  .hero-eyebrow {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--rust);
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+  }
+  .hero-eyebrow::before {
+    content: '';
+    display: block;
+    width: 2rem;
+    height: 1px;
+    background: var(--rust);
+  }
+
+  .hero-headline {
+    font-family: var(--serif);
+    font-size: clamp(3rem, 5vw, 5.5rem);
+    font-weight: 900;
+    line-height: 1.02;
+    letter-spacing: -0.02em;
+    margin-bottom: 1rem;
+  }
+
+  .hero-headline .line-accent {
+    color: var(--amber);
+    font-style: italic;
+  }
+
+  .hero-sub {
+    font-size: 1.05rem;
+    color: var(--muted);
+    max-width: 42ch;
+    margin-bottom: 3rem;
+    line-height: 1.7;
+  }
+
+  .hero-actions {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .btn-primary {
+    background: var(--ink);
+    color: var(--paper);
+    padding: 0.85rem 2rem;
+    border-radius: 2px;
+    text-decoration: none;
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    transition: all 0.2s;
+    border: 2px solid var(--ink);
+  }
+  .btn-primary:hover { background: var(--amber); color: var(--ink); border-color: var(--amber); }
+
+  .btn-outline {
+    border: 2px solid var(--ink);
+    color: var(--ink);
+    padding: 0.85rem 2rem;
+    border-radius: 2px;
+    text-decoration: none;
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    transition: all 0.2s;
+    background: transparent;
+  }
+  .btn-outline:hover { background: var(--ink); color: var(--paper); }
+
+  .hero-right {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--ink);
+    overflow: hidden;
+  }
+
+  .hero-portrait-bg {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 60% 40%, #2d4a3e 0%, #0e0e0e 70%);
+  }
+
+  .hero-grid-lines {
+    position: absolute;
+    inset: 0;
+    background-image: 
+      linear-gradient(rgba(212,168,67,0.08) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(212,168,67,0.08) 1px, transparent 1px);
+    background-size: 40px 40px;
+  }
+
+  .hero-card {
+    position: relative;
+    z-index: 2;
+    padding: 3rem;
+    text-align: center;
+    max-width: 380px;
+  }
+
+  .hero-avatar {
+    width: 110px;
+    height: 110px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--amber) 0%, var(--rust) 100%);
+    margin: 0 auto 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--serif);
+    font-size: 2.5rem;
+    font-weight: 900;
+    color: var(--ink);
+    border: 4px solid rgba(212,168,67,0.3);
+    box-shadow: 0 0 0 8px rgba(212,168,67,0.08);
+    animation: pulse-ring 3s ease-in-out infinite;
+  }
+
+  @keyframes pulse-ring {
+    0%, 100% { box-shadow: 0 0 0 8px rgba(212,168,67,0.08); }
+    50% { box-shadow: 0 0 0 16px rgba(212,168,67,0.04); }
+  }
+
+  .hero-name {
+    font-family: var(--serif);
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--paper);
+    margin-bottom: 0.3rem;
+  }
+
+  .hero-role {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.15em;
+    color: var(--amber);
+    text-transform: uppercase;
+    margin-bottom: 2rem;
+  }
+
+  .hero-stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-top: 1.5rem;
+  }
+
+  .stat-box {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(212,168,67,0.2);
+    border-radius: 4px;
+    padding: 1rem;
+  }
+  .stat-box .num {
+    font-family: var(--serif);
+    font-size: 1.8rem;
+    font-weight: 900;
+    color: var(--amber);
+    line-height: 1;
+  }
+  .stat-box .label {
+    font-family: var(--mono);
+    font-size: 0.62rem;
+    letter-spacing: 0.1em;
+    color: rgba(245,240,232,0.5);
+    text-transform: uppercase;
+    margin-top: 0.3rem;
+  }
+
+  .hero-scroll-hint {
+    position: absolute;
+    bottom: 2.5rem;
+    left: 5rem;
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    color: var(--muted);
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+  }
+  .scroll-arrow {
+    display: inline-block;
+    animation: bounce 2s ease-in-out infinite;
+  }
+  @keyframes bounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(6px)} }
+
+  /* ── SECTION SHARED ── */
+  section { position: relative; }
+
+  .container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 3rem;
+  }
+
+  .section-label {
+    font-family: var(--mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--amber);
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+  }
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--line);
+    max-width: 80px;
+  }
+
+  .section-title {
+    font-family: var(--serif);
+    font-size: clamp(2rem, 3.5vw, 3.2rem);
+    font-weight: 900;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    margin-bottom: 1.2rem;
+  }
+
+  .section-body {
+    font-size: 1.05rem;
+    color: var(--muted);
+    line-height: 1.75;
+    max-width: 62ch;
+  }
+
+  /* ── MANIFESTO ── */
+  .manifesto {
+    padding: 7rem 0;
+    background: var(--cream);
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    overflow: hidden;
+  }
+
+  .manifesto-inner {
+    display: grid;
+    grid-template-columns: 1fr 1.4fr;
+    gap: 5rem;
+    align-items: center;
+  }
+
+  .manifesto-quote {
+    position: relative;
+    padding: 2.5rem;
+    background: var(--ink);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .manifesto-quote::before {
+    content: '"';
+    position: absolute;
+    top: -1rem;
+    left: 1.5rem;
+    font-family: var(--serif);
+    font-size: 10rem;
+    color: var(--amber);
+    opacity: 0.15;
+    line-height: 1;
+    pointer-events: none;
+  }
+  .manifesto-quote p {
+    font-family: var(--serif);
+    font-size: 1.4rem;
+    font-style: italic;
+    color: var(--paper);
+    line-height: 1.5;
+    position: relative;
+    z-index: 1;
+  }
+  .manifesto-quote .attribution {
+    margin-top: 1.5rem;
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    color: var(--amber);
+    text-transform: uppercase;
+    position: relative;
+    z-index: 1;
+  }
+
+  .manifesto-points {
+    display: flex;
+    flex-direction: column;
+    gap: 1.8rem;
+  }
+
+  .manifesto-point {
+    display: flex;
+    gap: 1.2rem;
+    align-items: flex-start;
+  }
+
+  .point-icon {
+    width: 44px;
+    height: 44px;
+    min-width: 44px;
+    background: linear-gradient(135deg, var(--amber) 0%, var(--rust) 100%);
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    margin-top: 0.1rem;
+  }
+
+  .point-text h4 {
+    font-family: var(--serif);
+    font-size: 1.05rem;
+    font-weight: 700;
+    margin-bottom: 0.25rem;
+  }
+
+  .point-text p {
+    font-size: 0.92rem;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  /* ── VISION ── */
+  .vision {
+    padding: 7rem 0;
+  }
+
+  .vision-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5px;
+    margin-top: 4rem;
+    background: var(--line);
+    border: 1px solid var(--line);
+  }
+
+  .vision-cell {
+    background: var(--paper);
+    padding: 2.5rem;
+    position: relative;
+    overflow: hidden;
+    transition: background 0.3s;
+  }
+  .vision-cell:hover { background: var(--cream); }
+  .vision-cell:hover .vision-cell-num { color: var(--amber); }
+
+  .vision-cell-num {
+    font-family: var(--serif);
+    font-size: 4rem;
+    font-weight: 900;
+    color: rgba(14,14,14,0.06);
+    position: absolute;
+    top: 1rem;
+    right: 1.5rem;
+    line-height: 1;
+    transition: color 0.3s;
+  }
+
+  .vision-cell h3 {
+    font-family: var(--serif);
+    font-size: 1.15rem;
+    font-weight: 700;
+    margin: 0.8rem 0 0.6rem;
+    line-height: 1.3;
+  }
+
+  .vision-cell p {
+    font-size: 0.9rem;
+    color: var(--muted);
+    line-height: 1.65;
+  }
+
+  .vision-cell-icon {
+    font-size: 1.6rem;
+    display: block;
+    margin-bottom: 0.2rem;
+  }
+
+  /* ── WHY ME ── */
+  .why-me {
+    padding: 7rem 0;
+    background: var(--ink);
+    overflow: hidden;
+  }
+
+  .why-me .section-label { color: var(--amber-light); }
+  .why-me .section-title { color: var(--paper); }
+  .why-me .section-body { color: rgba(245,240,232,0.6); }
+
+  .why-me-inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5rem;
+    align-items: center;
+    margin-top: 4rem;
+  }
+
+  .differentiators {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .differ-item {
+    display: flex;
+    gap: 1.5rem;
+    padding: 1.8rem 0;
+    border-bottom: 1px solid rgba(245,240,232,0.08);
+    align-items: flex-start;
+  }
+
+  .differ-num {
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    color: var(--amber);
+    letter-spacing: 0.1em;
+    padding-top: 0.15rem;
+    min-width: 2rem;
+  }
+
+  .differ-content h4 {
+    font-family: var(--serif);
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--paper);
+    margin-bottom: 0.3rem;
+  }
+
+  .differ-content p {
+    font-size: 0.88rem;
+    color: rgba(245,240,232,0.55);
+    line-height: 1.6;
+  }
+
+  .why-me-visual {
+    position: relative;
+  }
+
+  .philosophy-card {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(212,168,67,0.2);
+    border-radius: 6px;
+    padding: 2.5rem;
+    position: relative;
+  }
+
+  .philosophy-card h3 {
+    font-family: var(--serif);
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--paper);
+    margin-bottom: 1.2rem;
+  }
+
+  .philosophy-card p {
+    font-size: 0.93rem;
+    color: rgba(245,240,232,0.6);
+    line-height: 1.7;
+    margin-bottom: 1rem;
+  }
+
+  .philosophy-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    margin-top: 1.5rem;
+  }
+
+  .tag {
+    font-family: var(--mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.08em;
+    padding: 0.35rem 0.8rem;
+    border: 1px solid rgba(212,168,67,0.3);
+    border-radius: 2px;
+    color: var(--amber);
+    text-transform: uppercase;
+  }
+
+  /* ── PROJECTS ── */
+  .projects {
+    padding: 7rem 0;
+    background: var(--cream);
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+  }
+
+  .projects-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    margin-top: 4rem;
+  }
+
+  .project-card {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    overflow: hidden;
+    text-decoration: none;
+    color: inherit;
+    display: block;
+    transition: transform 0.3s, box-shadow 0.3s;
+  }
+  .project-card:hover { transform: translateY(-6px); box-shadow: 0 20px 60px rgba(14,14,14,0.12); }
+
+  .project-card-header {
+    padding: 2rem 2rem 1.2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+
+  .project-status {
+    font-family: var(--mono);
+    font-size: 0.62rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0.3rem 0.7rem;
+    border-radius: 2px;
+  }
+  .status-live { background: rgba(45,74,62,0.12); color: var(--forest); }
+  .status-planned { background: rgba(184,92,42,0.12); color: var(--rust); }
+
+  .project-icon { font-size: 2rem; }
+
+  .project-card-body { padding: 0 2rem 2rem; }
+
+  .project-card-body h3 {
+    font-family: var(--serif);
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+  }
+
+  .project-card-body p {
+    font-size: 0.9rem;
+    color: var(--muted);
+    line-height: 1.65;
+    margin-bottom: 1.2rem;
+  }
+
+  .project-features {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .feat-pill {
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.06em;
+    padding: 0.25rem 0.65rem;
+    background: rgba(14,14,14,0.06);
+    border-radius: 2px;
+    color: var(--muted);
+  }
+
+  .project-card-footer {
+    padding: 1.2rem 2rem;
+    border-top: 1px solid var(--line);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .project-link-text {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .project-link-arrow { transition: transform 0.2s; }
+  .project-card:hover .project-link-arrow { transform: translateX(4px); }
+
+  .project-tech {
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    color: var(--muted);
+  }
+
+  /* upcoming card */
+  .project-card.upcoming {
+    border: 2px dashed var(--line);
+    background: transparent;
+  }
+
+  /* ── HERO QUARTERS SPECIAL CARD ── */
+  .project-card.heroquarters-card {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    color: var(--ink);
+    position: relative;
+    overflow: hidden;
+    text-decoration: none;
+    display: block;
+  }
+  .project-card.heroquarters-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--amber), var(--forest), var(--rust));
+  }
+  .project-card.heroquarters-card .project-card-body h3 { color: var(--ink); }
+  .project-card.heroquarters-card .project-card-body p { color: var(--muted); }
+  .project-card.heroquarters-card .project-card-footer {
+    border-top: 1px solid var(--line);
+  }
+  .project-card.heroquarters-card .project-link-text { color: var(--ink); }
+  .project-card.heroquarters-card .project-tech { color: var(--muted); }
+  .project-card.heroquarters-card .feat-pill {
+    background: rgba(14,14,14,0.06);
+    color: var(--muted);
+  }
+  .status-beta { background: rgba(184,92,42,0.1); color: var(--rust); }
+
+  /* ── LIVE PRODUCTS BANNER ── */
+  .live-products-banner {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    margin-bottom: 2.5rem;
+    padding: 0.7rem 1.2rem;
+    background: rgba(45,74,62,0.08);
+    border: 1px solid rgba(45,74,62,0.2);
+    border-radius: 3px;
+    width: fit-content;
+  }
+  .live-dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--forest);
+    animation: live-pulse 2s ease-in-out infinite;
+  }
+  @keyframes live-pulse {
+    0%,100%{box-shadow:0 0 0 0 rgba(45,74,62,0.5)}
+    50%{box-shadow:0 0 0 6px rgba(45,74,62,0)}
+  }
+  .live-label {
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--forest);
+    font-weight: 500;
+  }
+
+  /* ── UPCOMING PROJECTS SECTION ── */
+  .upcoming-section {
+    margin-top: 5rem;
+    padding-top: 3.5rem;
+    border-top: 1px solid var(--line);
+  }
+  .upcoming-header {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+  }
+  .upcoming-label {
+    font-family: var(--mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--rust);
+    white-space: nowrap;
+  }
+  .upcoming-line {
+    flex: 1;
+    height: 1px;
+    background: var(--line);
+  }
+  .upcoming-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+  }
+  .upcoming-card {
+    background: var(--paper);
+    border: 1px dashed rgba(14,14,14,0.18);
+    border-radius: 4px;
+    padding: 1.8rem;
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+  .upcoming-card::after {
+    content: 'COMING SOON';
+    position: absolute;
+    top: 1rem;
+    right: -2.5rem;
+    font-family: var(--mono);
+    font-size: 0.52rem;
+    letter-spacing: 0.1em;
+    background: var(--rust);
+    color: var(--paper);
+    padding: 0.2rem 3rem;
+    transform: rotate(30deg);
+    opacity: 0.7;
+  }
+  .upcoming-card:hover {
+    border-style: solid;
+    border-color: var(--amber);
+    transform: translateY(-4px);
+    box-shadow: 0 12px 40px rgba(14,14,14,0.08);
+  }
+  .upcoming-card-icon { font-size: 1.8rem; margin-bottom: 0.8rem; }
+  .upcoming-card h4 {
+    font-family: var(--serif);
+    font-size: 1.05rem;
+    font-weight: 700;
+    margin-bottom: 0.4rem;
+    color: var(--ink);
+  }
+  .upcoming-card p {
+    font-size: 0.85rem;
+    color: var(--muted);
+    line-height: 1.6;
+    margin-bottom: 1rem;
+  }
+  .upcoming-stage {
+    font-family: var(--mono);
+    font-size: 0.62rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0.25rem 0.7rem;
+    border-radius: 2px;
+    color: var(--rust);
+    background: rgba(184,92,42,0.1);
+    display: inline-block;
+  }
+
+  @media (max-width: 768px) {
+    .upcoming-grid { grid-template-columns: 1fr; }
+  }
+
+  /* ── COMMON MAN SECTION ── */
+  .commonman {
+    padding: 7rem 0;
+    overflow: hidden;
+  }
+
+  .commonman-inner {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 5rem;
+    align-items: center;
+  }
+
+  .people-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin-top: 3rem;
+  }
+
+  .people-card {
+    background: var(--cream);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    padding: 1.4rem 1rem;
+    text-align: center;
+    transition: all 0.3s;
+  }
+  .people-card:hover {
+    background: var(--ink);
+    border-color: var(--ink);
+    transform: translateY(-3px);
+  }
+  .people-card:hover .people-name, .people-card:hover .people-role { color: var(--paper); }
+  .people-card:hover .people-icon-bg { background: rgba(212,168,67,0.2); }
+
+  .people-icon-bg {
+    width: 50px;
+    height: 50px;
+    background: rgba(14,14,14,0.06);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    margin: 0 auto 0.8rem;
+    transition: background 0.3s;
+  }
+
+  .people-name {
+    font-family: var(--serif);
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--ink);
+    transition: color 0.3s;
+  }
+
+  .people-role {
+    font-family: var(--mono);
+    font-size: 0.62rem;
+    color: var(--muted);
+    letter-spacing: 0.06em;
+    margin-top: 0.2rem;
+    transition: color 0.3s;
+  }
+
+  .commonman-right { }
+
+  .stat-row {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    margin-top: 2rem;
+  }
+
+  .stat-line {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .stat-line-label {
+    font-size: 0.9rem;
+    color: var(--muted);
+  }
+
+  .stat-line-val {
+    font-family: var(--serif);
+    font-size: 1.6rem;
+    font-weight: 900;
+    color: var(--ink);
+  }
+
+  .stat-line-bar {
+    height: 3px;
+    background: var(--line);
+    border-radius: 2px;
+    margin-top: 0.5rem;
+    overflow: hidden;
+  }
+
+  .stat-line-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--amber), var(--rust));
+    border-radius: 2px;
+    transition: width 1.5s ease;
+    width: 0;
+  }
+
+  /* ── BUSINESS MODEL ── */
+  .business {
+    padding: 7rem 0;
+    background: var(--ink);
+    color: var(--paper);
+  }
+
+  .business .section-label { color: var(--amber-light); }
+  .business .section-title { color: var(--paper); }
+  .business .section-body { color: rgba(245,240,232,0.6); }
+
+  .layers {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+    margin-top: 4rem;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.05);
+  }
+
+  .layer {
+    background: var(--ink);
+    padding: 2.5rem;
+    position: relative;
+    overflow: hidden;
+    transition: background 0.3s;
+  }
+  .layer:hover { background: #181818; }
+  .layer::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%;
+    height: 3px;
+    background: linear-gradient(90deg, var(--amber), var(--rust));
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.4s ease;
+  }
+  .layer:hover::before { transform: scaleX(1); }
+
+  .layer-num {
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    color: var(--amber);
+    letter-spacing: 0.15em;
+    margin-bottom: 1rem;
+  }
+
+  .layer h3 {
+    font-family: var(--serif);
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--paper);
+    margin-bottom: 0.8rem;
+  }
+
+  .layer p {
+    font-size: 0.88rem;
+    color: rgba(245,240,232,0.55);
+    line-height: 1.65;
+    margin-bottom: 1.2rem;
+  }
+
+  .layer-examples {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  .layer-examples li {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    color: rgba(245,240,232,0.4);
+    padding-left: 1rem;
+    position: relative;
+  }
+  .layer-examples li::before {
+    content: '→';
+    position: absolute;
+    left: 0;
+    color: var(--amber);
+  }
+
+  /* ── CONTACT ── */
+  .contact {
+    padding: 7rem 0;
+    background: var(--cream);
+    border-top: 1px solid var(--line);
+  }
+
+  .contact-inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5rem;
+    align-items: start;
+  }
+
+  .contact-info {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    margin-top: 2rem;
+  }
+
+  .contact-item {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    padding: 1.2rem 1.5rem;
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    text-decoration: none;
+    color: inherit;
+    transition: all 0.2s;
+  }
+  .contact-item:hover { border-color: var(--amber); transform: translateX(4px); }
+
+  .contact-icon {
+    width: 40px;
+    height: 40px;
+    background: var(--ink);
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    flex-shrink: 0;
+  }
+
+  .contact-item-text .label {
+    font-family: var(--mono);
+    font-size: 0.62rem;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+  .contact-item-text .value {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--ink);
+    margin-top: 0.15rem;
+  }
+
+  .contact-cta-box {
+    background: var(--ink);
+    border-radius: 4px;
+    padding: 3rem;
+    color: var(--paper);
+  }
+
+  .contact-cta-box h3 {
+    font-family: var(--serif);
+    font-size: 1.8rem;
+    font-weight: 900;
+    margin-bottom: 1rem;
+    line-height: 1.2;
+  }
+
+  .contact-cta-box p {
+    font-size: 0.92rem;
+    color: rgba(245,240,232,0.6);
+    line-height: 1.7;
+    margin-bottom: 2rem;
+  }
+
+  .contact-cta-box .btn-primary {
+    display: inline-block;
+    margin-bottom: 1rem;
+    width: 100%;
+    text-align: center;
+  }
+
+  .cta-note {
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.06em;
+    color: rgba(245,240,232,0.35);
+    text-align: center;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--ink);
+    padding: 3rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid rgba(255,255,255,0.06);
+  }
+
+  .footer-logo {
+    font-family: var(--serif);
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--paper);
+  }
+  .footer-logo span { color: var(--amber); }
+
+  .footer-copy {
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    color: rgba(245,240,232,0.3);
+    letter-spacing: 0.08em;
+  }
+
+  .footer-links {
+    display: flex;
+    gap: 1.5rem;
+  }
+  .footer-links a {
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    color: rgba(245,240,232,0.4);
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+  .footer-links a:hover { color: var(--amber); }
+
+  /* ── MARQUEE ── */
+  .marquee-wrap {
+    overflow: hidden;
+    background: var(--amber);
+    padding: 0.75rem 0;
+    border-top: 1px solid rgba(14,14,14,0.1);
+    border-bottom: 1px solid rgba(14,14,14,0.1);
+  }
+
+  .marquee-track {
+    display: flex;
+    gap: 0;
+    animation: marquee 28s linear infinite;
+    white-space: nowrap;
+  }
+
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+
+  .marquee-item {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink);
+    padding: 0 3rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  .marquee-dot { color: var(--rust); font-size: 1rem; }
+
+  /* ── FADE IN ANIMATIONS ── */
+  .fade-up {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .fade-up.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 768px) {
+    nav { padding: 1rem 1.5rem; }
+    .nav-links { display: none; }
+    .hero { grid-template-columns: 1fr; }
+    .hero-left { padding: 7rem 1.5rem 3rem; }
+    .hero-right { min-height: 50vh; }
+    .container { padding: 0 1.5rem; }
+    .manifesto-inner, .why-me-inner, .commonman-inner, .contact-inner { grid-template-columns: 1fr; gap: 2rem; }
+    .vision-grid, .layers { grid-template-columns: 1fr; }
+    .projects-grid { grid-template-columns: 1fr; }
+    .upcoming-grid { grid-template-columns: 1fr; }
+    .people-grid { grid-template-columns: repeat(2, 1fr); }
+    .hero-scroll-hint { left: 1.5rem; }
+    footer { flex-direction: column; gap: 1rem; text-align: center; }
+    .footer-links { flex-wrap: wrap; justify-content: center; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">Ajay <span>Sharitra</span></a>
+  <ul class="nav-links">
+    <li><a href="#vision">Vision</a></li>
+    <li><a href="#why">Why Me</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#people">For Everyone</a></li>
+    <li><a href="#contact">Contact</a></li>
+    <li><a href="https://ajay-sharitra.github.io/ledgesoft.html" target="_blank" class="nav-cta">LedgeSoft ↗</a></li>
+    <li><a href="#heroquarters" class="nav-cta" style="background:var(--forest);margin-left:0.3rem;">Hero Quarters ↗</a></li>
+    <li><a href="daysoft-landing.html" target="_blank" class="nav-cta" style="background:var(--rust);margin-left:0.3rem;">Day Soft ↗</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-left">
+    <div class="hero-eyebrow">Tirunelveli, Tamil Nadu</div>
+    <h1 class="hero-headline">
+      Building Software<br>
+      for <span class="line-accent">Real People.</span><br>
+      Real Work.
+    </h1>
+    <p class="hero-sub">
+      Technology shouldn't be a luxury for big corporations alone. I build practical, affordable software tools for the shopkeeper, the contractor, the tutor — everyday people who deserve better tools too.
+    </p>
+    <div class="hero-actions">
+      <a href="#projects" class="btn-primary">See My Work</a>
+      <a href="https://ajay-sharitra.github.io/ledgesoft.html" target="_blank" class="btn-outline">LedgeSoft ↗</a>
+    </div>
+  </div>
+
+  <div class="hero-right">
+    <div class="hero-portrait-bg"></div>
+    <div class="hero-grid-lines"></div>
+    <div class="hero-card">
+      <div class="hero-avatar">AS</div>
+      <div class="hero-name">Ajay Sharitra .B</div>
+      <div class="hero-role">Network Engineer · Software Developer</div>
+      <div class="hero-stats">
+        <div class="stat-box">
+          <div class="num">3+</div>
+          <div class="label">Years IT</div>
+        </div>
+        <div class="stat-box">
+          <div class="num">CCNA</div>
+          <div class="label">Certified</div>
+        </div>
+        <div class="stat-box">
+          <div class="num">2</div>
+          <div class="label">Live Products</div>
+        </div>
+        <div class="stat-box">
+          <div class="num">₹0</div>
+          <div class="label">VC Money</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-scroll-hint">
+    Scroll to explore <span class="scroll-arrow">↓</span>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-wrap">
+  <div class="marquee-track">
+    <span class="marquee-item">LedgeSoft <span class="marquee-dot">◆</span></span>
+    <span class="marquee-item">Hero Quarters <span class="marquee-dot">◆</span></span>
+    <span class="marquee-item">Day Soft <span class="marquee-dot">◆</span></span>
+    <span class="marquee-item">Software for Everyone <span class="marquee-dot">◆</span></span>
+    <span class="marquee-item">Tirunelveli Built <span class="marquee-dot">◆</span></span>
+    <span class="marquee-item">Python · Flask · SQLite <span class="marquee-dot">◆</span></span>
+    <span class="marquee-item">Local. Honest. Practical. <span class="marquee-dot">◆</span></span>
+    <span class="marquee-item">CCNA Certified <span class="marquee-dot">◆</span></span>
+    <span class="marquee-item">Network + Software <span class="marquee-dot">◆</span></span>
+    <span class="marquee-item">IT for the Common Man <span class="marquee-dot">◆</span></span>
+    <span class="marquee-item">LedgeSoft <span class="marquee-dot">◆</span></span>
+    <span class="marquee-item">Hero Quarters <span class="marquee-dot">◆</span></span>
+    <span class="marquee-item">Day Soft <span class="marquee-dot">◆</span></span>
+    <span class="marquee-item">Software for Everyone <span class="marquee-dot">◆</span></span>
+    <span class="marquee-item">Tirunelveli Built <span class="marquee-dot">◆</span></span>
+    <span class="marquee-item">Python · Flask · SQLite <span class="marquee-dot">◆</span></span>
+    <span class="marquee-item">Local. Honest. Practical. <span class="marquee-dot">◆</span></span>
+    <span class="marquee-item">CCNA Certified <span class="marquee-dot">◆</span></span>
+    <span class="marquee-item">Network + Software <span class="marquee-dot">◆</span></span>
+    <span class="marquee-item">IT for the Common Man <span class="marquee-dot">◆</span></span>
+  </div>
+</div>
+
+<!-- MANIFESTO -->
+<section class="manifesto" id="vision">
+  <div class="container">
+    <div class="manifesto-inner">
+      <div class="manifesto-quote fade-up">
+        <p>Technology reached the boardrooms of Mumbai and Bangalore. It's time it reached the tea shop in Tirunelveli.</p>
+        <div class="attribution">— Ajay Sharitra · The Vision</div>
+      </div>
+      <div class="manifesto-points">
+        <div class="section-label fade-up">The Philosophy</div>
+        <h2 class="section-title fade-up">Why does this matter?</h2>
+        <div class="manifesto-point fade-up">
+          <div class="point-icon">🏗️</div>
+          <div class="point-text">
+            <h4>Born from a real problem</h4>
+            <p>LedgeSoft wasn't invented in a startup lab. A real construction company in Tirunelveli needed a real ledger tool — not a ₹50,000/year ERP. That gap between need and access is the whole point.</p>
+          </div>
+        </div>
+        <div class="manifesto-point fade-up">
+          <div class="point-icon">🤝</div>
+          <div class="point-text">
+            <h4>IT should belong to everyone</h4>
+            <p>A petty shop owner managing stock, a tutor tracking fees, an auto driver logging earnings — they all deserve the same clarity that tech gives big companies. Just in simpler, affordable forms.</p>
+          </div>
+        </div>
+        <div class="manifesto-point fade-up">
+          <div class="point-icon">🌱</div>
+          <div class="point-text">
+            <h4>Build local, grow with trust</h4>
+            <p>Local businesses trust people they know. I am that person — the neighbourhood tech friend who shows up, sets it up, and is reachable on WhatsApp when something goes wrong.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- VISION GRID -->
+<section class="vision">
+  <div class="container">
+    <div class="section-label fade-up">The Roadmap Ahead</div>
+    <h2 class="section-title fade-up">A three-year vision,<br>one tool at a time.</h2>
+    <p class="section-body fade-up">I'm not trying to be the next Zoho. I'm building a sustainable neighbourhood software practice — where every product solves one real problem for one real type of person.</p>
+
+    <div class="vision-grid">
+      <div class="vision-cell fade-up">
+        <span class="vision-cell-num">01</span>
+        <span class="vision-cell-icon">🏗️</span>
+        <h3>Construction Financial Management</h3>
+        <p>LedgeSoft is already live. Built for small construction companies to track project income, expenses, and profit — no spreadsheets needed.</p>
+      </div>
+      <div class="vision-cell fade-up">
+        <span class="vision-cell-num">02</span>
+        <span class="vision-cell-icon">🦸</span>
+        <h3>Team Workflow Management</h3>
+        <p>Hero Quarters is in closed beta — a comic-book-themed workflow tool for small teams who want mission boards, role management, and real operational clarity.</p>
+      </div>
+      <div class="vision-cell fade-up">
+        <span class="vision-cell-num">03</span>
+        <span class="vision-cell-icon">✂️</span>
+        <h3>Tailor Order Management</h3>
+        <p>Track customer orders, measurements, due dates, and payments. A digital notebook that doesn't get lost or torn.</p>
+      </div>
+      <div class="vision-cell fade-up">
+        <span class="vision-cell-num">04</span>
+        <span class="vision-cell-icon">📚</span>
+        <h3>Tutor Fee & Student Tracker</h3>
+        <p>Home tutors managing 20–30 students often struggle with fee tracking. One simple tool solves it completely.</p>
+      </div>
+      <div class="vision-cell fade-up">
+        <span class="vision-cell-num">05</span>
+        <span class="vision-cell-icon">🔧</span>
+        <h3>Local IT Services & Network Setup</h3>
+        <p>End-to-end network setup, troubleshooting, and IT consulting for small offices, shops, and establishments. On-call support.</p>
+      </div>
+      <div class="vision-cell fade-up">
+        <span class="vision-cell-num">06</span>
+        <span class="vision-cell-icon">📋</span>
+        <h3>Annual Maintenance Contracts</h3>
+        <p>Predictable ₹X/year plans covering software updates, backups, and IT support. Peace of mind for small business owners.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHY ME -->
+<section class="why-me" id="why">
+  <div class="container">
+    <div class="section-label fade-up">Why Choose Me</div>
+    <h2 class="section-title fade-up">What makes this<br><em style="font-style:italic">different?</em></h2>
+    <p class="section-body fade-up">You could hire a large IT firm. Or you could work with someone who understands your street, your language, and will actually pick up the phone.</p>
+
+    <div class="why-me-inner">
+      <div class="differentiators">
+        <div class="differ-item fade-up">
+          <div class="differ-num">01</div>
+          <div class="differ-content">
+            <h4>I am local — genuinely local</h4>
+            <p>Based in Tirunelveli. I understand the businesses here — how they work, what they can afford, and what problems they actually face. Not a remote consultant guessing.</p>
+          </div>
+        </div>
+        <div class="differ-item fade-up">
+          <div class="differ-num">02</div>
+          <div class="differ-content">
+            <h4>Real products, not promises</h4>
+            <p>LedgeSoft is live and tested. Hero Quarters is in closed beta. These aren't portfolio concepts — they're functional software with real APIs, real databases, and real people using them.</p>
+          </div>
+        </div>
+        <div class="differ-item fade-up">
+          <div class="differ-num">03</div>
+          <div class="differ-content">
+            <h4>Network + Software — both worlds</h4>
+            <p>CCNA certified network engineer who also builds software. I can set up your office network and build you a custom billing app. One person, full stack.</p>
+          </div>
+        </div>
+        <div class="differ-item fade-up">
+          <div class="differ-num">04</div>
+          <div class="differ-content">
+            <h4>Priced for real businesses</h4>
+            <p>No surprise invoices. No ₹5,000/month subscriptions for a tea shop. Honest, flat, one-time pricing with long support included. Built to last, not to bill.</p>
+          </div>
+        </div>
+        <div class="differ-item fade-up">
+          <div class="differ-num">05</div>
+          <div class="differ-content">
+            <h4>WhatsApp-level accessibility</h4>
+            <p>I'm reachable the way local businesses communicate — direct, fast, in Tamil or English. Not a ticket system. Not a chatbot. Me, directly.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="why-me-visual fade-up">
+        <div class="philosophy-card">
+          <h3>The Neighbourhood Tech Person</h3>
+          <p>Every community had a trusted mechanic, a trusted doctor, a trusted electrician. Someone you called when things broke, who knew your situation, and gave you fair advice.</p>
+          <p>Software and IT services haven't had that person yet — at least not in most small towns. That's exactly who I'm building myself to be.</p>
+          <p>Not a startup. Not an agency. A reliable, local, technical partner for small businesses that deserve better tools.</p>
+          <div class="philosophy-tags">
+            <span class="tag">Honest Pricing</span>
+            <span class="tag">Local Knowledge</span>
+            <span class="tag">Direct Support</span>
+            <span class="tag">Tamil Nadu</span>
+            <span class="tag">CCNA</span>
+            <span class="tag">Open Source Stack</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section class="projects" id="projects">
+  <div class="container">
+    <div class="section-label fade-up">What I've Built</div>
+    <h2 class="section-title fade-up">Live Products &amp;<br>The Roadmap Ahead</h2>
+    <p class="section-body fade-up">Every product starts with a real person who had a real problem. No features for features' sake.</p>
+
+    <!-- Live Products Banner -->
+    <div class="live-products-banner fade-up" style="margin-top:2rem;">
+      <div class="live-dot"></div>
+      <span class="live-label">3 Products Live &amp; In Active Development</span>
+    </div>
+
+    <!-- ── LIVE PRODUCTS GRID ── -->
+    <div class="projects-grid">
+
+      <!-- LedgeSoft -->
+      <a href="https://ajay-sharitra.github.io/ledgesoft.html" target="_blank" class="project-card fade-up">
+        <div class="project-card-header">
+          <span class="project-icon">🏗️</span>
+          <span class="project-status status-live">● Live — v0.1g</span>
+        </div>
+        <div class="project-card-body">
+          <h3>LedgeSoft</h3>
+          <p>A complete financial intelligence platform for construction companies. Track project income and expenses, visualize profit &amp; loss, export reports, and manage your entire business — without needing an accountant or an ERP subscription.</p>
+          <div class="project-features">
+            <span class="feat-pill">P&amp;L Dashboard</span>
+            <span class="feat-pill">Excel Export</span>
+            <span class="feat-pill">Multi-User RBAC</span>
+            <span class="feat-pill">15 REST APIs</span>
+            <span class="feat-pill">8 DB Tables</span>
+            <span class="feat-pill">Audit Trail</span>
+          </div>
+        </div>
+        <div class="project-card-footer">
+          <span class="project-link-text">Visit LedgeSoft <span class="project-link-arrow">→</span></span>
+          <span class="project-tech">Python · Flask · SQLite</span>
+        </div>
+      </a>
+
+      <!-- Hero Quarters -->
+      <a href="https://ajay-sharitra.github.io/heroquarters-site.html" target="_blank" class="project-card heroquarters-card fade-up" id="heroquarters">
+        <div class="project-card-header" style="background:transparent;">
+          <span class="project-icon">🦸</span>
+          <span class="project-status status-beta" style="background:rgba(212,168,67,0.12);color:var(--rust);border:1px solid rgba(184,92,42,0.25);">⚡ Beta — Closed Testing</span>
+        </div>
+        <div class="project-card-body">
+          <h3>Hero Quarters</h3>
+          <p>A comic-book-themed workflow management system — your team's secret lair for mission briefings, villain tracking, sidekick coordination, and operational command. Built for small teams who want a powerful tool that actually feels fun to use.</p>
+          <div class="project-features">
+            <span class="feat-pill">Mission Board</span>
+            <span class="feat-pill">Team Roles</span>
+            <span class="feat-pill">Villain Tracker</span>
+            <span class="feat-pill">Workflow Automation</span>
+            <span class="feat-pill">Lair Dashboard</span>
+            <span class="feat-pill">Secure Access</span>
+          </div>
+        </div>
+        <div class="project-card-footer">
+          <span class="project-link-text">Explore Hero Quarters <span class="project-link-arrow">→</span></span>
+          <span class="project-tech">Python · Flask · SQLite</span>
+        </div>
+      </a>
+
+      <!-- Day Soft -->
+      <a href="daysoft-landing.html" target="_blank" class="project-card fade-up" id="daysoft">
+        <div class="project-card-header">
+          <span class="project-icon">📒</span>
+          <span class="project-status status-live">● Live — Desktop App</span>
+        </div>
+        <div class="project-card-body">
+          <h3>Day Soft</h3>
+          <p>A lightweight, offline-first day book application for working professionals who need simple, reliable financial record-keeping — no internet, no subscriptions, no complexity. Your data stays on your own computer.</p>
+          <div class="project-features">
+            <span class="feat-pill">Day Book Entry</span>
+            <span class="feat-pill">Ledger Search</span>
+            <span class="feat-pill">Offline-First</span>
+            <span class="feat-pill">Auto Backups</span>
+            <span class="feat-pill">Secure Login</span>
+            <span class="feat-pill">Local Storage</span>
+          </div>
+        </div>
+        <div class="project-card-footer">
+          <span class="project-link-text">Explore Day Soft <span class="project-link-arrow">→</span></span>
+          <span class="project-tech">Python · PySide6 · SQLite</span>
+        </div>
+      </a>
+
+    </div>
+
+    <!-- ── UPCOMING PROJECTS ── -->
+    <div class="upcoming-section">
+      <div class="upcoming-header">
+        <span class="upcoming-label">On the Horizon</span>
+        <div class="upcoming-line"></div>
+        <span style="font-family:var(--mono);font-size:0.62rem;color:var(--muted);letter-spacing:0.1em;white-space:nowrap;">IN DESIGN &amp; PLANNED</span>
+      </div>
+      <div class="upcoming-grid">
+
+        <!-- ShopTrack -->
+        <div class="upcoming-card fade-up">
+          <div class="upcoming-card-icon">🛒</div>
+          <h4>ShopTrack</h4>
+          <p>Dead-simple inventory &amp; billing for petty shops and kirana stores. Offline-first, touch-friendly, with Tamil UI and receipt printing.</p>
+          <div style="display:flex;flex-wrap:wrap;gap:0.4rem;margin-bottom:1rem;">
+            <span class="feat-pill">Offline First</span>
+            <span class="feat-pill">Stock Alerts</span>
+            <span class="feat-pill">Tamil UI</span>
+            <span class="feat-pill">Receipt Print</span>
+          </div>
+          <span class="upcoming-stage">◎ In Design</span>
+        </div>
+
+        <!-- TailorDesk -->
+        <div class="upcoming-card fade-up">
+          <div class="upcoming-card-icon">✂️</div>
+          <h4>TailorDesk</h4>
+          <p>Digital order book for tailors and boutique owners. Customer measurements, due-date tracking, and WhatsApp payment reminders — all in one place.</p>
+          <div style="display:flex;flex-wrap:wrap;gap:0.4rem;margin-bottom:1rem;">
+            <span class="feat-pill">Order Tracking</span>
+            <span class="feat-pill">Measurements DB</span>
+            <span class="feat-pill">Due Date Alerts</span>
+          </div>
+          <span class="upcoming-stage">◎ Planned</span>
+        </div>
+
+        <!-- TutorBook -->
+        <div class="upcoming-card fade-up">
+          <div class="upcoming-card-icon">📚</div>
+          <h4>TutorBook</h4>
+          <p>Fee tracking and student management for home tutors. Monthly collection, attendance logs, parent directory, and overdue reminders — replacing the physical register.</p>
+          <div style="display:flex;flex-wrap:wrap;gap:0.4rem;margin-bottom:1rem;">
+            <span class="feat-pill">Fee Collection</span>
+            <span class="feat-pill">Attendance</span>
+            <span class="feat-pill">Parent Directory</span>
+          </div>
+          <span class="upcoming-stage">◎ Planned</span>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOR EVERYONE -->
+<section class="commonman" id="people">
+  <div class="container">
+    <div class="commonman-inner">
+      <div>
+        <div class="section-label fade-up">For Everyone</div>
+        <h2 class="section-title fade-up">Software that serves<br>people, <em style="font-style:italic">not profiles.</em></h2>
+        <p class="section-body fade-up">
+          Large IT companies build for large clients. Startups chase VC money and urban users. Somewhere in between, the small business owner in Tirunelveli, Madurai, or any tier-2 town is still managing their livelihood in a worn notebook.
+        </p>
+        <p class="section-body fade-up" style="margin-top:1rem;">
+          That's the gap I'm filling. Not with enterprise-grade complexity, but with focused, honest tools that cost less than a month's electricity bill and actually get used.
+        </p>
+        <div class="people-grid">
+          <div class="people-card fade-up">
+            <div class="people-icon-bg">🏗️</div>
+            <div class="people-name">Contractor</div>
+            <div class="people-role">Project Ledger</div>
+          </div>
+          <div class="people-card fade-up">
+            <div class="people-icon-bg">🛒</div>
+            <div class="people-name">Shop Owner</div>
+            <div class="people-role">Stock & Billing</div>
+          </div>
+          <div class="people-card fade-up">
+            <div class="people-icon-bg">✂️</div>
+            <div class="people-name">Tailor</div>
+            <div class="people-role">Order Book</div>
+          </div>
+          <div class="people-card fade-up">
+            <div class="people-icon-bg">📚</div>
+            <div class="people-name">Home Tutor</div>
+            <div class="people-role">Fee Tracker</div>
+          </div>
+          <div class="people-card fade-up">
+            <div class="people-icon-bg">🍽️</div>
+            <div class="people-name">Mess Owner</div>
+            <div class="people-role">Billing System</div>
+          </div>
+          <div class="people-card fade-up">
+            <div class="people-icon-bg">🏢</div>
+            <div class="people-name">Small Office</div>
+            <div class="people-role">IT Setup</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="commonman-right fade-up">
+        <div class="section-label">The Numbers Tell the Story</div>
+        <div class="stat-row">
+          <div>
+            <div class="stat-line">
+              <div>
+                <div class="stat-line-label">India's small businesses with no digital tools</div>
+              </div>
+              <div class="stat-line-val">63M+</div>
+            </div>
+            <div class="stat-line-bar"><div class="stat-line-fill" data-width="92%"></div></div>
+          </div>
+          <div>
+            <div class="stat-line">
+              <div>
+                <div class="stat-line-label">Who can afford ₹50,000/yr enterprise software</div>
+              </div>
+              <div class="stat-line-val">~2%</div>
+            </div>
+            <div class="stat-line-bar"><div class="stat-line-fill" data-width="2%"></div></div>
+          </div>
+          <div>
+            <div class="stat-line">
+              <div>
+                <div class="stat-line-label">LedgeSoft pricing vs nearest competitor</div>
+              </div>
+              <div class="stat-line-val">95% less</div>
+            </div>
+            <div class="stat-line-bar"><div class="stat-line-fill" data-width="95%"></div></div>
+          </div>
+          <div>
+            <div class="stat-line">
+              <div>
+                <div class="stat-line-label">Support response time (WhatsApp)</div>
+              </div>
+              <div class="stat-line-val">&lt; 2hrs</div>
+            </div>
+            <div class="stat-line-bar"><div class="stat-line-fill" data-width="75%"></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BUSINESS MODEL -->
+<section class="business">
+  <div class="container">
+    <div class="section-label fade-up">The Business Model</div>
+    <h2 class="section-title fade-up">Three layers.<br>One sustainable practice.</h2>
+    <p class="section-body fade-up">Software products fund the time. IT services build the relationships. Maintenance contracts create the stability. Together, they form a complete neighbourhood tech practice.</p>
+
+    <div class="layers">
+      <div class="layer fade-up">
+        <div class="layer-num">LAYER 01</div>
+        <h3>Software Products</h3>
+        <p>One-time licensed tools built for specific business types. Affordable, focused, and backed by direct support from the developer.</p>
+        <ul class="layer-examples">
+          <li>LedgeSoft — Construction</li>
+          <li>ShopTrack — Kirana/Petty Shops</li>
+          <li>TailorDesk — Boutiques</li>
+          <li>TutorBook — Home Tutors</li>
+          <li>Custom tools on request</li>
+        </ul>
+      </div>
+      <div class="layer fade-up">
+        <div class="layer-num">LAYER 02</div>
+        <h3>IT Services</h3>
+        <p>Hands-on technical work for small offices, shops, and local businesses. Network setup, hardware, software, and ongoing support.</p>
+        <ul class="layer-examples">
+          <li>Office network setup</li>
+          <li>Wi-Fi & LAN configuration</li>
+          <li>Hardware troubleshooting</li>
+          <li>Custom software development</li>
+          <li>IT consultation</li>
+        </ul>
+      </div>
+      <div class="layer fade-up">
+        <div class="layer-num">LAYER 03</div>
+        <h3>Annual Maintenance</h3>
+        <p>Predictable yearly contracts for software updates, backups, and on-call IT support. Peace of mind for the long term.</p>
+        <ul class="layer-examples">
+          <li>Software updates included</li>
+          <li>Automated backup systems</li>
+          <li>Priority WhatsApp support</li>
+          <li>Annual health checks</li>
+          <li>Renewal pricing guaranteed</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact" id="contact">
+  <div class="container">
+    <div class="contact-inner">
+      <div>
+        <div class="section-label fade-up">Get In Touch</div>
+        <h2 class="section-title fade-up">Let's build something<br>useful together.</h2>
+        <p class="section-body fade-up">Whether you need a software tool for your business, IT setup for your office, or just want to understand what's possible — reach out. I'll give you an honest answer.</p>
+
+        <div class="contact-info">
+          <a href="mailto:ajaysharitra@gmail.com" class="contact-item fade-up">
+            <div class="contact-icon">✉️</div>
+            <div class="contact-item-text">
+              <div class="label">Email</div>
+              <div class="value">ajaysharitra@gmail.com</div>
+            </div>
+          </a>
+          <a href="tel:9488001018" class="contact-item fade-up">
+            <div class="contact-icon">📞</div>
+            <div class="contact-item-text">
+              <div class="label">Phone / WhatsApp</div>
+              <div class="value">94880 01018</div>
+            </div>
+          </a>
+          <a href="tel:8940149854" class="contact-item fade-up">
+            <div class="contact-icon">📱</div>
+            <div class="contact-item-text">
+              <div class="label">Alternate / WhatsApp</div>
+              <div class="value">89401 49854</div>
+            </div>
+          </a>
+          <div class="contact-item fade-up" style="cursor:default">
+            <div class="contact-icon">📍</div>
+            <div class="contact-item-text">
+              <div class="label">Location</div>
+              <div class="value">Tirunelveli, Tamil Nadu, India</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="contact-cta-box fade-up">
+        <h3>Ready to give your business better tools?</h3>
+        <p>Try LedgeSoft for construction finance management, or join the Hero Quarters waitlist for team workflow tools. Both built here, in Tirunelveli, for real people.</p>
+        <a href="https://ajay-sharitra.github.io/" target="_blank" class="btn-primary">Explore LedgeSoft ↗</a>
+        <a href="#heroquarters" class="btn-outline" style="display:block;text-align:center;margin-top:0.8rem;color:var(--paper);border-color:rgba(245,240,232,0.3)">See Hero Quarters ↗</a>
+        <a href="mailto:ajaysharitra@gmail.com" class="btn-outline" style="display:block;text-align:center;margin-top:0.8rem;color:var(--paper);border-color:rgba(245,240,232,0.3)">Send Me a Message</a>
+        <p class="cta-note" style="margin-top:1.5rem;">No sales team. No auto-replies. Just me.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">Ajay <span>Sharitra</span> .B</div>
+  <div class="footer-copy">© 2026 · Tirunelveli, Tamil Nadu · Building Software for Everyone</div>
+  <div class="footer-links">
+    <a href="https://ajay-sharitra.github.io/ledgesoft.html" target="_blank">LedgeSoft</a>
+    <a href="#heroquarters"> Hero Quarters</a>
+    <a href="daysoft-landing.html" target="_blank">Day Soft</a>
+    <a href="mailto:ajaysharitra@gmail.com">Email</a>
+    <a href="tel:9488001018">Call</a>
+  </div>
+</footer>
+
+<script>
+  // Fade-up on scroll
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => entry.target.classList.add('visible'), 80);
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+  // Animate stat bars
+  const barObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const fills = entry.target.querySelectorAll('.stat-line-fill');
+        fills.forEach(fill => {
+          const w = fill.getAttribute('data-width');
+          setTimeout(() => fill.style.width = w, 300);
+        });
+        barObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.3 });
+
+  const statRow = document.querySelector('.stat-row');
+  if (statRow) barObserver.observe(statRow);
+
+  // Stagger children
+  document.querySelectorAll('.vision-grid, .people-grid, .layers, .projects-grid').forEach(parent => {
+    parent.querySelectorAll('.fade-up').forEach((child, i) => {
+      child.style.transitionDelay = `${i * 80}ms`;
+    });
+  });
+</script>
+</body>
+</html>
